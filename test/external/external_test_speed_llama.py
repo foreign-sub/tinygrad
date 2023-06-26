@@ -33,7 +33,11 @@ class TestLLaMASpeed(unittest.TestCase):
       for i in range(5):
         model(Tensor([[2]]), i).realize()
         tms.append(time.perf_counter())
-      print(f"{st:15s} runtime in ms:", ', '.join("%.2f"%((tms[i+1]-tms[i])*1000) for i in range(len(tms)-1)))
+      s_tms  = [(tms[t+1]-tms[t])*1000 for t in range(len(tms)-1)]
+      mean_t = sum(s_tms)/len(s_tms)
+      sqrd_d = [(t-mean_t)**2 for t in s_tms]
+      s_std_dev = (sum(sqrd_d)/(len(sqrd_d)-1)) ** 0.5
+      print(f"{st:15s} | runtime:", ', '.join([f"{t: <8.2f}" for t in s_tms]), f"| mean: {mean_t: <8.2f}, ssd: {s_std_dev: <8.2f} (ms)")
 
     run_llama("codegen")
     run_llama("methodcache", False)
