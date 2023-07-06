@@ -4,6 +4,7 @@ import time
 import re
 import numpy as np
 from pycuda.compiler import compile as cuda_compile # type: ignore
+from pynvrtc.compiler import Program, ProgramException
 from tinygrad.helpers import DEBUG, getenv, fromimport, colored
 from tinygrad.ops import Compiled
 from tinygrad.runtime.lib import RawBufferCopyInOut, RawMallocBuffer
@@ -60,7 +61,7 @@ class CUDAProgram:
           f.write(cuda_compile(prg, target="cubin", no_extern_c=True))
         sass = subprocess.check_output(['nvdisasm', '/tmp/cubin']).decode('utf-8')
         print(sass)
-      if not binary: prg = cuda_compile(prg, target="ptx", no_extern_c=True, options=['-Wno-deprecated-gpu-targets']).decode('utf-8')
+      if not binary: prg = Program(prg, f"{name}.cu").compile(['--fmad=true -ftz=true -prec_div=false -prec_sqrt=false -fast-math -Wno-deprecated-gpu-targets'])
     except cuda.CompileError as e:
       if DEBUG >= 3: print("FAILED TO BUILD", prg)
       raise e
@@ -80,7 +81,7 @@ class CUDAProgram:
 
 class CUDACodegen(CStyleCodegen):
   lang = CStyleLanguage(
-    kernel_prefix = "typedef unsigned char uchar;\ntypedef unsigned int uint;\ntypedef unsigned long ulong;\n__global__", smem_prefix = "__shared__ ", barrier = "__syncthreads();", float4 = "make_float4",
+    kernel_prefix = "#define INFINITY (1.0f / 0.0f)\ntypedef unsigned char uchar;\ntypedef unsigned int uint;\ntypedef unsigned long ulong;\n__global__", smem_prefix = "__shared__ ", barrier = "__syncthreads();", float4 = "make_float4",
     gid = [f'blockIdx.{chr(120+i)}' for i in range(3)],
     lid = [f'threadIdx.{chr(120+i)}' for i in range(3)],
     half_prekernel = """
