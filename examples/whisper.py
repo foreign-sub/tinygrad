@@ -10,8 +10,6 @@ from tinygrad.state import torch_load, load_state_dict
 from tinygrad.helpers import getenv, dtypes
 from tinygrad.tensor import Tensor
 from extra.utils import download_file
-from extra.datasets.librispeech import ci, BASEDIR
-from examples.mlperf.metrics import word_error_rate
 
 # audio hyperparameters
 RATE = 16000
@@ -182,7 +180,7 @@ def prep_audio(audio, padding) -> Tensor:
   log_spec = np.maximum(log_spec, log_spec.max() - 8.0)
   log_spec = (log_spec + 4.0) / 4.0
   return log_spec
-  
+
 def listener(q):
   prep_audio(np.zeros(300), RATE)
   import pyaudio
@@ -285,6 +283,8 @@ if __name__ == "__main__":
     return texts
 
   if getenv("TEST"):
+    from extra.datasets.librispeech import ci, BASEDIR
+    from examples.mlperf.metrics import word_error_rate
     diff = difflib.Differ()
     for c in ci:
       fn = BASEDIR / c["files"][0]["fname"]
