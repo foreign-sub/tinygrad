@@ -1,4 +1,5 @@
 import random
+from tinygrad.helpers import getenv
 from tinygrad.shape.symbolic import Variable
 
 def add_v(expr, rng=None):
@@ -31,7 +32,11 @@ def ge(expr, rng=None):
 
 if __name__ == "__main__":
   ops = [add_v, div, mul, add_num]
-  while 1:
+  loops = 0
+  F_LOOPS = getenv("F_LOOPS", 0)
+  while (loops<F_LOOPS if F_LOOPS else 1):
+    loops +=1
+    if (F_LOOPS): print(loops," :")
     u1 = Variable("v1", 0, 2)
     u2 = Variable("v2", 0, 3)
     u3 = Variable("v3", 0, 4)
