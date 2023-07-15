@@ -198,7 +198,7 @@ jobs:
     - uses: tecolicom/actions-use-apt-tools@v1
       with:
         tools: intel-oneapi-runtime-compilers intel-oneapi-runtime-opencl
-        method: timestamp
+        #method: timestamp
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
@@ -232,7 +232,7 @@ jobs:
     - uses: tecolicom/actions-use-apt-tools@v1
       with:
         tools: intel-oneapi-runtime-compilers intel-oneapi-runtime-opencl
-        method: timestamp
+        #method: timestamp
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
