@@ -55,7 +55,7 @@ jobs:
     - name: Install Dependencies
       run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Set env
-      run: printf "CPU=1\nEXCLUDE_DEVICES=GPU\n" >> $GITHUB_ENV
+      run: printf "CPU=1\nEXCLUDE_DEVICES=GPU" >> $GITHUB_ENV
     - name: Test Docs
       run: python docs/abstractions.py
     - name: Test Quickstart
@@ -116,7 +116,7 @@ jobs:
 
   testllvm:
     name: LLVM Tests
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     timeout-minutes: 20
 
     steps:
@@ -131,8 +131,10 @@ jobs:
         check-latest: true
     - name: Install Dependencies
       run: pip install -e '.[llvm,testing]' --extra-index-url https://download.pytorch.org/whl/cpu
+    - name: Set env
+      run: printf "CPU=1\nEXCLUDE_DEVICES=GPU\nENABLE_METHOD_CACHE=1\nLLVM=1" >> $GITHUB_ENV
     - name: Run Pytest
-      run: ENABLE_METHOD_CACHE=1 LLVM=1 python -m pytest -s -v -n=auto test/
+      run: python -m pytest -s -v -n=auto test/
 
   testclang:
     strategy:
