@@ -1,5 +1,6 @@
 import random
 from test.unit.test_shapetracker import CheckingShapeTracker
+from tinygrad.helpers import getenv
 
 def do_permute(st):
   perm = list(range(0, len(st.shape)))
@@ -53,7 +54,11 @@ def do_expand(st):
 
 if __name__ == "__main__":
   ops = [do_permute, do_pad, do_shrink, do_reshape_split_one, do_reshape_combine_two, do_stride, do_expand]
-  while 1:
+  loops = 0
+  F_LOOPS = getenv("F_LOOPS", 0)
+  while (loops<F_LOOPS if F_LOOPS else 1):
+    loops +=1
+    if (F_LOOPS): print(loops," :")
     st = CheckingShapeTracker((3, 3, 3))
     for i in range(8): random.choice(ops)(st)
     #st.simplify()
