@@ -61,9 +61,7 @@ jobs:
     - name: Test Quickstart
       run: awk '/```python/{flag=1;next}/```/{flag=0}flag' docs/quickstart.md > quickstart.py && PYTHONPATH=. python quickstart.py
     - name: Run Pytest
-      run: |
-        printf $GITHUB_ENV
-        python -m pytest -s -v -n=auto test/
+      run: python -m pytest -s -v -n=auto test/
 
   testwebgpu:
     name: WebGPU Tests
