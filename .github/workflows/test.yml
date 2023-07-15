@@ -283,7 +283,7 @@ jobs:
     - name: Install Dependencies
       run: pip install -e '.[metal,testing]'
     - name: Set Env
-      run: printf "PYTHONPATH=.\METAL=1\n" >> $GITHUB_ENV
+      run: printf "PYTHONPATH=.\nMETAL=1\n" >> $GITHUB_ENV
     - name: Test LLaMA compile speed
       run: python3 test/external/external_test_speed_llama.py
     #- name: Run dtype test
