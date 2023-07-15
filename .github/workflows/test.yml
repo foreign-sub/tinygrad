@@ -55,7 +55,7 @@ jobs:
     - name: Install Dependencies
       run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Set env
-      run: printf "CPU=1\n" >> $GITHUB_ENV
+      run: printf "CPU=1\nEXCLUDE_DEVICES=GPU\n" >> $GITHUB_ENV
     - name: Test Docs
       run: python docs/abstractions.py
     - name: Test Quickstart
