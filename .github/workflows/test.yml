@@ -188,6 +188,8 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
+    - name: Disable man db updates
+      run: sudo rm -f /var/lib/man-db/auto-update
     - name: Update packages
       run: |
         wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
@@ -195,10 +197,8 @@ jobs:
         sudo apt-get update
     #- name: Install OpenCL
       #run: sudo apt-get install -y pocl-opencl-icd
-    - uses: tecolicom/actions-use-apt-tools@v1
-      with:
-        tools: intel-oneapi-runtime-compilers intel-oneapi-runtime-opencl
-        method: timestamp
+    - name: Install intel OpenCL
+      run: sudo apt-get install -y intel-oneapi-runtime-compilers intel-oneapi-runtime-opencl
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
@@ -222,6 +222,8 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
+    - name: Disable man db updates
+      run: sudo rm -f /var/lib/man-db/auto-update
     - name: Update packages
       run: |
         wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
@@ -229,10 +231,8 @@ jobs:
         sudo apt-get update
     #- name: Install OpenCL
       #run: sudo apt-get install -y pocl-opencl-icd
-    - uses: tecolicom/actions-use-apt-tools@v1
-      with:
-        tools: intel-oneapi-runtime-compilers intel-oneapi-runtime-opencl
-        #method: timestamp
+    - name: Install intel OpenCL
+      run: sudo apt-get install -y intel-oneapi-runtime-compilers intel-oneapi-runtime-opencl
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
@@ -311,6 +311,10 @@ jobs:
         key: ubuntu22.04-gpuocelot-19626fc00b6ee321638c3111074269c69050e091
         restore-keys: |
           ubuntu22.04-gpuocelot-19626fc00b6ee321638c3111074269c69050e091
+    - name: Disable man db updates
+      run: |
+        sudo rm -f /var/lib/man-db/auto-update
+    #sudo sed -i 's/yes/no/g' /etc/initramfs-tools/update-initramfs.conf
     - if: ${{ steps.cache-build.outputs.cache-hit != 'true' }}
       name: Update packages
       run: |
