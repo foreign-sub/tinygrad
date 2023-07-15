@@ -134,7 +134,7 @@ jobs:
     - name: Install Dependencies
       run: pip install -e '.[llvm,testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Set env
-      run: printf "CPU=1\nEXCLUDE_DEVICES=GPU\nENABLE_METHOD_CACHE=1\nLLVM=1" >> $GITHUB_ENV
+      run: printf "EXCLUDE_DEVICES=GPU\nENABLE_METHOD_CACHE=1\nLLVM=1" >> $GITHUB_ENV
     - name: Run Pytest
       run: python -m pytest -s -v -n=auto test/
 
