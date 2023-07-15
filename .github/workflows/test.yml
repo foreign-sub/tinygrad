@@ -317,16 +317,12 @@ jobs:
         export DEBIAN_FRONTEND=noninteractive
         sudo apt-get update -y
     - if: ${{ steps.cache-build.outputs.cache-hit != 'true' }}
-      uses: tecolicom/actions-use-apt-tools@v1
-      with:
-        tools: git g++ cmake llvm-15-dev zlib1g-dev bison # libz-dev
-        #method: timestamp
+      name: Install packages for compiling
+      run: sudo apt-get install -y --no-install-recommends git g++ cmake llvm-15-dev zlib1g-dev bison
     #- name: Install packages
     #  run: sudo apt-get install -y --no-install-recommends libz-dev
-    - uses: tecolicom/actions-use-apt-tools@v1
-      with:
-        tools: flex libboost-thread-dev libboost-filesystem-dev libfl-dev libglew-dev ninja-build nvidia-cuda-toolkit-gcc
-        method: timestamp
+    - name: Install packages for building
+      run: sudo apt-get install -y --no-install-recommends flex libboost-thread-dev libboost-filesystem-dev libfl-dev libglew-dev ninja-build nvidia-cuda-toolkit-gcc
     - if: ${{ steps.cache-build.outputs.cache-hit != 'true' }}
       name: Clone gpuocelot
       uses: actions/checkout@v3
