@@ -197,11 +197,10 @@ jobs:
         sudo apt-get update
     #- name: Install OpenCL
       #run: sudo apt-get install -y pocl-opencl-icd
-    - uses: awalsh128/cache-apt-pkgs-action@latest
+    - uses: tecolicom/actions-use-apt-tools@v1
       with:
-        packages: intel-oneapi-runtime-compilers intel-oneapi-runtime-opencl
-        version: 1.0
-        execute_install_scripts: true
+        tools: intel-oneapi-runtime-compilers intel-oneapi-runtime-opencl
+        method: timestamp
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:
