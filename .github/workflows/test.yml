@@ -54,12 +54,14 @@ jobs:
         cache-dependency-path: setup.py
     - name: Install Dependencies
       run: pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
+    - name: Set env
+      run: printf "CPU=1\n" >> $GITHUB_ENV
     - name: Test Docs
-      run: CPU=1 python docs/abstractions.py
+      run: python docs/abstractions.py
     - name: Test Quickstart
-      run: awk '/```python/{flag=1;next}/```/{flag=0}flag' docs/quickstart.md > quickstart.py && PYTHONPATH=. CPU=1 python quickstart.py
+      run: awk '/```python/{flag=1;next}/```/{flag=0}flag' docs/quickstart.md > quickstart.py && PYTHONPATH=. python quickstart.py
     - name: Run Pytest
-      run: CPU=1 python -m pytest -s -v -n=auto test/
+      run: python -m pytest -s -v -n=auto test/
 
   testwebgpu:
     name: WebGPU Tests
