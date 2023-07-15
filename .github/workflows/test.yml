@@ -318,7 +318,7 @@ jobs:
         sudo apt-get update -y
     - uses: tecolicom/actions-use-apt-tools@v1
       with:
-        tools: ninja-build
+        tools: ninja-build nvidia-cuda-toolkit-gcc
         #method: timestamp
     - if: ${{ steps.cache-build.outputs.cache-hit != 'true' }}
       uses: tecolicom/actions-use-apt-tools@v1
