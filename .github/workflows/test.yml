@@ -319,7 +319,7 @@ jobs:
     - if: ${{ steps.cache-build.outputs.cache-hit != 'true' }}
       uses: tecolicom/actions-use-apt-tools@v1
       with:
-        tools: git g++ cmake llvm-15-dev libz-dev bison
+        tools: git g++ cmake llvm-15-dev zlib1g-dev bison # libz-dev
         #method: timestamp
     #- name: Install packages
     #  run: sudo apt-get install -y --no-install-recommends libz-dev
