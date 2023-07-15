@@ -326,7 +326,7 @@ jobs:
     - uses: tecolicom/actions-use-apt-tools@v1
       with:
         tools: flex libboost-thread-dev libboost-filesystem-dev libfl-dev libglew-dev ninja-build nvidia-cuda-toolkit-gcc
-        #method: timestamp
+        method: timestamp
     - if: ${{ steps.cache-build.outputs.cache-hit != 'true' }}
       name: Clone gpuocelot
       uses: actions/checkout@v3
