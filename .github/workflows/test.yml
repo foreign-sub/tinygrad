@@ -155,7 +155,7 @@ jobs:
 
   testtorch:
     name: Torch Tests
-    runs-on: ubuntu-latest
+    runs-on: macos-13
     timeout-minutes: 20
 
     steps:
