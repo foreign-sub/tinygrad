@@ -307,12 +307,12 @@ jobs:
       run: |
         export DEBIAN_FRONTEND=noninteractive
         sudo apt-get update -y
-    - uses: awalsh128/cache-apt-pkgs-action@latest
+    - uses: tecolicom/actions-use-apt-tools@v1
       with:
-        packages: git g++ cmake ninja-build llvm-15-dev libglew-dev flex bison libfl-dev libboost-thread-dev libboost-filesystem-dev nvidia-cuda-toolkit-gcc
-        version: 1.0
-    - name: Install packages
-      run: sudo apt-get install -y --no-install-recommends libz-dev
+        tools: git g++ cmake ninja-build llvm-15-dev libz-dev libglew-dev flex bison libfl-dev libboost-thread-dev libboost-filesystem-dev nvidia-cuda-toolkit-gcc
+        method: timestamp
+    #- name: Install packages
+    #  run: sudo apt-get install -y --no-install-recommends libz-dev
     - name: Cache gpuocelot
       id: cache-build
       uses: actions/cache@v3
