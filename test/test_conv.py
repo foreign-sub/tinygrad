@@ -17,7 +17,7 @@ class TestConv(unittest.TestCase):
     #w = Tensor(np.arange(8*8*1*1).reshape(8,8,1,1).astype(np.float32))
     w = Tensor.eye(8).reshape((8,8,1,1))
     ret = x.conv2d(w, stride=(1,2), padding=(0,0)).numpy()
-    print(ret)
+    #print(ret)
 
   def test_lazycache(self):
     Tensor.no_grad = True
@@ -34,7 +34,7 @@ class TestConv(unittest.TestCase):
     b = Tensor(np.arange(C).astype(np.float32))
     ret = Tensor.conv2d(x,w,b).relu().conv2d(w,b)
 
-    print(ret.numpy())
+    #print(ret.numpy())
 
   def test_two_binops_no_rerun(self):
     Tensor.no_grad = True
@@ -70,7 +70,7 @@ class TestConv(unittest.TestCase):
     x = x.conv2d(w).elu()
 
     x = x.numpy()
-    print(x.shape)
+    #print(x.shape)
     Tensor.no_grad = False
 
   def test_elu(self):
@@ -104,7 +104,7 @@ class TestConv(unittest.TestCase):
     x = x.conv2d(w, groups=32)
     out = x.numpy()
     Tensor.no_grad = False
-  
+
   def test_multiadd(self):
     w = Tensor.ones(32)
     x = Tensor.ones(32).relu()
@@ -114,7 +114,7 @@ class TestConv(unittest.TestCase):
     x = Tensor.ones(1,12,128,256)
     w = Tensor.ones(12,12,3,3)
     x = x.conv2d(w, padding=(1,1))
-    print(x.shape)
+    #print(x.shape)
     x = x.reshape((1, 12, 256, 128))
     x += 1
     x += 1
