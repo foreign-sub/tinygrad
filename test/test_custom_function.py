@@ -59,7 +59,7 @@ class TestCustomFunction(unittest.TestCase):
 
     # run the forward pass. note: up until the .numpy(), it's all lazy
     c = ATan2.apply(a, b)
-    print(c.numpy())
+    #print(c.numpy())
 
     # check the forward pass (in numpy)
     np.testing.assert_allclose(c.numpy(), np.arctan2(a.numpy(), b.numpy()), atol=1e-5)
@@ -74,8 +74,8 @@ class TestCustomFunction(unittest.TestCase):
     # run the backward pass
     c.mean().backward()
     assert a.grad is not None and b.grad is not None, "tinygrad didn't compute gradients"
-    print(a.grad.numpy())
-    print(b.grad.numpy())
+    #print(a.grad.numpy())
+    #print(b.grad.numpy())
 
     # check the backward pass (in torch)
     import torch
