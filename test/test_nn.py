@@ -282,6 +282,5 @@ class TestNN(unittest.TestCase):
       torch_z = torch_layer(torch_x)
       np.testing.assert_allclose(z.numpy(), torch_z.detach().numpy(), atol=1e-8, rtol=1e-8)
 
-
 if __name__ == '__main__':
   unittest.main()
