@@ -63,7 +63,7 @@ class CheckingShapeTracker:
     x = [shapetracker_getitem(self.st, i) for i in range(prod(self.st.shape))]
     y = [self[i] for i in range(prod(self.shape))]
     idx, valid = self.st.expr_node()
-    print(x, y, self.st.shape, self.shape, idx.render(), valid.render(), self.st)
+    #print(x, y, self.st.shape, self.shape, idx.render(), valid.render(), self.st)
     assert self.st.shape == self.shape
     assert x == y, f"mismatch shapetracker:{x} real:{y}"
 
@@ -76,7 +76,7 @@ class TestRealIssues(unittest.TestCase):
 class TestRealDoesntSimplify(unittest.TestCase):
   def tearDown(self):
     st = self.st.real_strides()
-    print(st)
+    #print(st)
     self.st.simplify()
     assert len(self.st.views) != 1
     assert None in st
@@ -99,7 +99,7 @@ class TestRealStrides(unittest.TestCase):
       View((2048,), (1,), 0, ((0, 512),)),
       View((16, 32, 4), (128, 4, 1), 0, None)])
     st = self.st.real_strides()
-    print(self.st, st)
+    #print(self.st, st)
     assert st == (None, 4, 1)
 
 class TestRealSimplifies(unittest.TestCase):
@@ -107,7 +107,7 @@ class TestRealSimplifies(unittest.TestCase):
     st = self.st.real_strides()
     self.st.simplify()
     assert len(self.st.views) == 1
-    print(self.st.views[-1].strides, st)
+    #print(self.st.views[-1].strides, st)
     assert self.st.views[-1].strides == st
 
   def test_1(self):
@@ -131,38 +131,38 @@ class TestSimplifyingShapeTracker(unittest.TestCase):
   def test_expand_contract_simple(self):
     self.st.expand((10, 10))
     self.st.reshape((100,))
-    print(self.st.views)
+    #print(self.st.views)
     assert(len(self.st.views) == 2)
     self.st.reshape((10, 10))
-    print(self.st.views)
+    #print(self.st.views)
 
     self.st.simplify()
-    print(self.st.views)
+    #print(self.st.views)
     assert(len(self.st.views) == 1)
 
   # multiview simplify
   def test_expand_contract_different_shape(self):
     self.st.expand((10, 10))
     self.st.reshape((100,))
-    print(self.st.views)
+    #print(self.st.views)
     assert(len(self.st.views) == 2)
     self.st.reshape((2, 5, 2, 5))
-    print(self.st.views)
+    #print(self.st.views)
 
     self.st.simplify()
-    print(self.st.views)
+    #print(self.st.views)
     assert(len(self.st.views) == 1)
 
   # multiview simplify
   def test_expand_contract_still_complex(self):
     self.st.expand((10, 10))
     self.st.reshape((100,))
-    print(self.st.views)
+    #print(self.st.views)
     assert(len(self.st.views) == 2)
     self.st.reshape((5, 20))
 
     self.st.simplify()
-    print(self.st.views)
+    #print(self.st.views)
     assert(len(self.st.views) == 2)
 
 # Tensor.zeros(2, 4).permute(1,0).reshape(2, 4)
@@ -252,7 +252,7 @@ class TestComplexShapeTracker(unittest.TestCase):
     self.st.reshape((1, 1, 32, 64, 128))
     self.st.permute((0, 3, 4, 1, 2))
     self.st.reshape((64, 1024, 4))
-    print(self.st.views)
+    #print(self.st.views)
     assert self.st.contiguous
 
 class TestSingleShapeTracker(unittest.TestCase):
@@ -304,9 +304,9 @@ class TestShapeTrackerFuzzFailures(unittest.TestCase):
     self.st.shrink(((1, 2), (1, 3), (1, 3)))
     self.st.reshape((1, 4))
     self.st.shrink(((0, 1), (1, 3)))
-    print(self.st.st)
+    #print(self.st.st)
     self.st.simplify()
-    print(self.st.st)
+    #print(self.st.st)
   def test_case_2(self):
     self.st.stride( (1, 1, -2) )
     self.st.reshape( (3, 6) )
