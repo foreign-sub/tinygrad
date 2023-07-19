@@ -23,11 +23,11 @@ def compare_tiny_torch(model, model_torch, X, Y):
 
   out = model(X)
   loss = (out * Y).mean()
-  print(loss.realize().numpy())
+  #print(loss.realize().numpy())
 
   out_torch = model_torch(torch.Tensor(X.numpy()))
   loss_torch = (out_torch * torch.Tensor(Y.numpy())).mean()
-  print(loss_torch.detach().numpy())
+  #print(loss_torch.detach().numpy())
 
   # assert losses match
   np.testing.assert_allclose(loss.realize().numpy(), loss_torch.detach().numpy(), atol=1e-4)
