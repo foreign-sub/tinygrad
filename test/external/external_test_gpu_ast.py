@@ -206,6 +206,5 @@ class TestAST(unittest.TestCase):
     ast = LazyOp(MovementOps.RESHAPE, (op1,), (3, 32, 3, 3))
     compile_and_test_ast(ast)
 
-
 if __name__ == '__main__':
   unittest.main()
