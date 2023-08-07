@@ -1,7 +1,7 @@
 import math
 from typing import Optional, Union, Tuple
 from tinygrad.tensor import Tensor
-from tinygrad.helpers import prod
+from tinygrad.helpers import dtypes, prod
 
 class BatchNorm2d:
   def __init__(self, sz, eps=1e-5, affine=True, track_running_stats=True, momentum=0.1):
@@ -115,10 +115,11 @@ class LayerNorm2d(LayerNorm):
   def __call__(self, x): return super().__call__(x.permute(0, 2, 3, 1)).permute(0, 3, 1, 2)
 
 class Embedding:
-  def __init__(self, vocab_size:int, embed_size:int):
+  def __init__(self, vocab_size:int, embed_size:int, init_function=Tensor.kaiming_uniform):
     self.vocab_size = vocab_size
-    self.weight = Tensor.glorot_uniform(vocab_size, embed_size)
+    self.weight = init_function(vocab_size, embed_size)
 
   def __call__(self, idx:Tensor) -> Tensor:
-    vocab_counter = Tensor.arange(self.vocab_size, requires_grad=False).reshape(1, 1, self.vocab_size).expand(*idx.shape, self.vocab_size)
-    return (vocab_counter == idx.unsqueeze(2).expand(*idx.shape, self.vocab_size)) @ self.weight
+    vocab_mask = Tensor.zeros((1, idx.shape[1], self.vocab_size)).numpy()
+    for y,z in enumerate(idx.cast(dtypes.int32).numpy()[0]): vocab_mask[0][y][z] = 1.
+    return Tensor(vocab_mask) @ self.weight
