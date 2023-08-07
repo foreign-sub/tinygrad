@@ -120,6 +120,6 @@ class Embedding:
     self.weight = init_function(vocab_size, embed_size)
 
   def __call__(self, idx:Tensor) -> Tensor:
-    vocab_mask = Tensor.zeros((1, idx.shape[1], self.vocab_size)).numpy()
+    vocab_mask = Tensor.zeros((*idx.shape, self.vocab_size)).numpy()
     for y,z in enumerate(idx.cast(dtypes.int32).numpy()[0]): vocab_mask[0][y][z] = 1.
     return Tensor(vocab_mask) @ self.weight
