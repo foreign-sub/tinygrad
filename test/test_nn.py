@@ -452,6 +452,7 @@ class TestNN(unittest.TestCase):
 
   def test_embedding_one_kernel(self):
     layer = Embedding(20, 30)
+    layer.weight = Tensor.zeros_like(layer.weight).contiguous()
     a = Tensor([[1, 5, 9, 11],
                 [12, 19, 8, 1]])
     result = layer(a)
@@ -466,6 +467,15 @@ class TestNN(unittest.TestCase):
     schedule = create_schedule([result.lazydata])
     self.assertEqual(1, len([item for item in schedule if item.ast.op is UOps.SINK]), "second run realizes embedding only")
     run_schedule(schedule)
+
+  def test_embedding_shape(self):
+    vocab_size, embed_size = 10, 16
+    layer = Embedding(vocab_size, embed_size)
+    for rank in range(5):
+      shp = (1,) * rank
+      a = Tensor([3]).reshape(shp)
+      result = layer(a)
+      self.assertEqual(result.shape, shp + (embed_size,))
 
   def test_load_state_dict(self):
     layer = Conv2d(3, 5, kernel_size=3)
